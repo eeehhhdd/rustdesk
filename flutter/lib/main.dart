@@ -123,33 +123,12 @@ Future<void> main(List<String> args) async {
 Future<void> initEnv(String appType) async {
   // global shared preference
   await platformFFI.init(appType);
-  // ========== 新增：首次启动写入自定义服务器配置 ==========
-  await initDefaultServerConfig();
+  
   await initGlobalFFI();
   // await Firebase.initializeApp();
   _registerEventHandler();
   // Update the system theme.
   updateSystemWindowTheme();
-}
-
-// 新增这个方法，放在 initEnv 函数外面即可
-Future<void> initDefaultServerConfig() async {
-  // 读取本地已保存的ID服务器配置
-  String? rendezvousServer = await platformFFI.mainGetOption("custom-rendezvous-server");
-  // 判断：本地配置为空时，才写入我们的私有服务器
-  if (rendezvousServer == null || rendezvousServer.trim().isEmpty) {
-    // 替换成你自己的配置
-    final String defaultRendezvous = "你的IP:HBBS自定义端口";
-    final String defaultRelay = "你的IP:HBBR自定义端口";
-    final String defaultPubKey = "你的id_ed25519.pub单行内容";
-    final String defaultApi = "http://你的IP:21114";
-
-    // 持久化写入本地配置文件
-    await platformFFI.mainSetOption("custom-rendezvous-server", defaultRendezvous);
-    await platformFFI.mainSetOption("relay-server", defaultRelay);
-    await platformFFI.mainSetOption("key", defaultPubKey);
-    await platformFFI.mainSetOption("api-server", defaultApi);
-  }
 }
 
 void runMainApp(bool startService) async {
