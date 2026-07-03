@@ -996,6 +996,12 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Pull latest hbb_common from fork
+        run: |
+          git submodule set-url libs/hbb_common https://github.com/eeehhhdd/hbb_common.git
+          git -c protocol.version=2 submodule update --remote --merge libs/hbb_common
+          cd libs/hbb_common && git checkout main && git pull origin main && cd ../..
+
       - name: Install flutter
         uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
         with:
@@ -1267,6 +1273,12 @@ jobs:
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           submodules: recursive
+
+      - name: Pull latest hbb_common from fork
+        run: |
+          git submodule set-url libs/hbb_common https://github.com/eeehhhdd/hbb_common.git
+          git -c protocol.version=2 submodule update --remote --merge libs/hbb_common
+          cd libs/hbb_common && git checkout main && git pull origin main && cd ../..
 
       - name: Install flutter
         uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
