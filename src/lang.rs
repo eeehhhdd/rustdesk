@@ -124,7 +124,7 @@ fn resolve_lang(saved_lang: &str, locale: &str, cjk_fallback: bool) -> String {
     let locale = locale.to_lowercase();
     let mut lang = saved_lang.to_lowercase();
     if cjk_fallback && is_cjk_lang(&lang) {
-        return "en".to_owned();
+        return "zh-cn".to_owned();
     }
     if lang.is_empty() {
         // zh_CN on Linux, zh-Hans-CN on mac, zh_CN_#Hans on Android
