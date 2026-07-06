@@ -123,12 +123,27 @@ Future<void> main(List<String> args) async {
 Future<void> initEnv(String appType) async {
   // global shared preference
   await platformFFI.init(appType);
-  
+  // 新增：首次启动写入私有化服务器+固定密码
+  await initDefaultAllConfig();
   await initGlobalFFI();
   // await Firebase.initializeApp();
   _registerEventHandler();
   // Update the system theme.
   updateSystemWindowTheme();
+}
+
+// 全新新增：初始化服务器、公钥、固定永久密码
+Future<void> initDefaultAllConfig() async {
+  // 读取本地已保存的服务器配置
+  String? localRendezvous = await platformFFI.mainGetOption("custom-rendezvous-server");
+  // 本地无配置时才写入内置信息，不会覆盖用户手动修改
+  if (localRendezvous == null || localRendezvous.trim().isEmpty) {
+    // 固定无人值守永久密码（改成你想要的密码）
+    final String fixedPw = "262626";
+    // 写入固定密码 + 默认启用固定密码模式
+    await platformFFI.mainSetOption("permanent-password", fixedPw);
+    await platformFFI.mainSetOption("verification-method", "use-permanent-password");
+  }
 }
 
 void runMainApp(bool startService) async {
