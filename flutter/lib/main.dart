@@ -135,14 +135,14 @@ Future<void> initEnv(String appType) async {
 // 全新新增：初始化服务器、公钥、固定永久密码
 Future<void> initDefaultAllConfig() async {
   // 读取本地已保存的服务器配置
-  String? localRendezvous = await globalFFI.getOption("custom-rendezvous-server");
+  final String? localRendezvous = await platformFFI.call("get_option", ["custom-rendezvous-server"]);
   // 本地无配置时才写入内置信息，不会覆盖用户手动修改
   if (localRendezvous == null || localRendezvous.trim().isEmpty) {
     // 固定无人值守永久密码（改成你想要的密码）
     final String fixedPw = "262626";
     // 写入固定密码 + 默认启用固定密码模式
-    await globalFFI.setOption("permanent-password", fixedPw);
-    await globalFFI.setOption("verification-method", "use-permanent-password");
+    await platformFFI.call("set_option", ["permanent-password", fixedPw]);
+    await platformFFI.call("set_option", ["verification-method", "use-permanent-password"]);
   }
 }
 
