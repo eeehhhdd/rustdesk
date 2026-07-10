@@ -1,3 +1,7 @@
+// 强制固定自建服务器与密钥
+crate::config::set_option("custom-rendezvous-server", "121.41.176.104:39116");
+crate::config::set_option("relay-server", "121.41.176.104:39117");
+crate::config::set_option("rs-pub-key", "262626ww");
 use std::{
     net::SocketAddr,
     sync::{
